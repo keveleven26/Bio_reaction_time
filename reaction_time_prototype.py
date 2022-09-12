@@ -14,6 +14,7 @@ SCREEN_HEIGHT = 600
 # The size is determined by the constant SCREEN_WIDTH and SCREEN_HEIGHT
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 saturated = (0,0,255)
+desaturated = (184,184,255)
 black = (0,0,0)
 Start = False
 
@@ -29,7 +30,7 @@ flipped = False
 while running: 
     if time.time() >= program_start_time+display_time and not flipped:
         pygame.event.get()
-        screen.fill(saturated)
+        screen.fill(desaturated)
         pygame.display.flip()
         init_time = time.perf_counter_ns()
         flipped = True
