@@ -17,26 +17,32 @@ saturated = (0,0,255)
 black = (0,0,0)
 Start = False
 
+frame_num = 0
 
 running = True
+program_start_time = time.time()
+display_time = random.randint(3, 5)
+init_time = -1
+end_time = -1
+
+flipped = False
 while running: 
-    pygame.event.get()
-    if Start == False:
-        delay = random.randint(3,5)
-        time.sleep(delay)
-        Start = True
-    elif Start == True:
+    if time.time() >= program_start_time+display_time and not flipped:
+        pygame.event.get()
         screen.fill(saturated)
         pygame.display.flip()
-        start_time = pygame.time.get_ticks()
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    Start == False
-                    end_time = pygame.time.get_ticks()
-                    screen.fill(black)
-                    pygame.display.flip()
-                    print(float(end_time-start_time))
-                    break
+        init_time = time.perf_counter_ns()
+        flipped = True
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and flipped: 
+                print("received key down")
+                end_time = time.perf_counter_ns()
+                screen.fill(black)
+                pygame.display.flip()
+
+    if init_time != -1 and end_time != -1:
+        print(str((end_time-init_time)/1000000000)+" s")
+        break 
 
 pygame.quit()
